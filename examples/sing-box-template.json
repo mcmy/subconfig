@@ -1,0 +1,7 @@
+{
+  "log": {"level": "warn"},
+  "dns": {"servers": [{"type": "udp", "tag": "local", "server": "223.5.5.5"}], "final": "local"},
+  "inbounds": [{"type": "mixed", "tag": "mixed-in", "listen": "127.0.0.1", "listen_port": 3080}],
+  "outbounds": [],
+  "route": {}
+}

@@ -1,0 +1,10 @@
+subconfig derives its proxy model, URI parsers, generators, emoji rules,
+external INI parsing, fetching and rate limiting from subconverter-ng:
+https://github.com/Jungley8/subconverter-ng
+Copyright Jungley8 and contributors.
+Source snapshot: the parent workspace as of 2026-10-12.
+
+The new command, conversion orchestration, native document parser, HTTP API,
+metadata options, and project packaging are developed in this workspace.
+The complete project is distributed under GPL-3.0-or-later (see LICENSE).
+No parent checkout or runtime service is required.

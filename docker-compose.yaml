@@ -1,0 +1,41 @@
+services:
+  subconfig:
+    image: ${SUBCONFIG_IMAGE:-ghcr.io/mcmy/subconfig:latest}
+    # Docker automatically selects linux/amd64 or linux/arm64 for the host.
+    restart: unless-stopped
+    init: true
+    command: ["serve", "--listen", ":25500", "--allow-url"]
+    environment:
+      SUBCONFIG_SECRET: ${SUBCONFIG_SECRET:?Set SUBCONFIG_SECRET in .env before starting}
+    ports:
+      - "${SUBCONFIG_BIND_ADDRESS:-127.0.0.1}:${SUBCONFIG_PORT:-25500}:25500"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-T", "3", "-O", "/dev/null", "http://127.0.0.1:25500/healthz"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # To serve a local config, replace command above with:
+    # command: ["serve", "--listen", ":25500", "-c", "/data/config.yaml", "--allow-url=false"]
+    # volumes:
+    #   - type: bind
+    #     source: ./examples
+    #     target: /data
+    #     read_only: true
+    #     bind:
+    #       create_host_path: false
+    # Copy your config to ./examples/config.yaml before starting.
+    # Mount the directory so atomic file replacements are visible in the container.

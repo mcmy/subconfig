@@ -1,0 +1,23 @@
+{
+  "log": {"level": "info"},
+  "dns": {
+    "servers": [{"type": "udp", "tag": "local", "server": "223.5.5.5"}],
+    "final": "local"
+  },
+  "inbounds": [{"type": "mixed", "tag": "mixed-in", "listen": "127.0.0.1", "listen_port": 2080}],
+  "outbounds": [
+    {"type": "shadowsocks", "tag": "香港 SS", "server": "127.0.0.1", "server_port": 8388, "method": "aes-256-gcm", "password": "example-password"},
+    {"type": "trojan", "tag": "日本 Trojan", "server": "127.0.0.2", "server_port": 443, "password": "example-password", "tls": {"enabled": true, "server_name": "example.com"}},
+    {"type": "selector", "tag": "PROXY", "outbounds": ["香港 SS", "日本 Trojan", "direct"], "default": "香港 SS"},
+    {"type": "direct", "tag": "direct"}
+  ],
+  "route": {
+    "default_domain_resolver": "local",
+    "rules": [
+      {"protocol": "dns", "action": "hijack-dns"},
+      {"domain_suffix": ["example.cn"], "outbound": "direct"},
+      {"domain_suffix": ["ads.example.com"], "action": "reject"}
+    ],
+    "final": "PROXY"
+  }
+}

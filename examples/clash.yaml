@@ -1,0 +1,29 @@
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+dns:
+  enable: true
+  nameserver: [223.5.5.5, 1.1.1.1]
+proxies:
+  - name: 香港 SS
+    type: ss
+    server: 127.0.0.1
+    port: 8388
+    cipher: aes-256-gcm
+    password: example-password
+  - name: 日本 Trojan
+    type: trojan
+    server: 127.0.0.2
+    port: 443
+    password: example-password
+    sni: example.com
+    udp: true
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies: [香港 SS, 日本 Trojan, DIRECT]
+rules:
+  - DOMAIN-SUFFIX,example.cn,DIRECT
+  - DOMAIN-SUFFIX,ads.example.com,REJECT
+  - MATCH,PROXY

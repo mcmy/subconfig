@@ -1,0 +1,9 @@
+.git
+bin
+dist
+*.log
+.env
+.env.*
+!.env.example
+.github
+.idea
