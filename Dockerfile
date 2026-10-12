@@ -9,7 +9,7 @@ ARG VERSION=dev
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags="-s -w -X main.version=${VERSION}" -o /subconfig ./cmd/subconfig
 
-FROM alpine:3.22
+FROM alpine:3.24
 RUN apk add --no-cache ca-certificates \
     && addgroup -g 10001 subconfig \
     && adduser -D -H -u 10001 -G subconfig subconfig \
